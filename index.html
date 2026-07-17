@@ -10,14 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cream: #F1E7D6;
-            --paper: #FBF7EF;
-            --oxblood: #7A2432;
-            --oxblood-dark: #5C1A26;
-            --gold: #B8934D;
-            --charcoal: #2B2420;
+            --mint: #A3D1C6;
+            --mint-dark: #2C5E54;
+            --mint-light: #EBF5F3;
+            --cream: #FDFBF7;
+            --paper: #FFFFFF;
+            --gold: #D4AF37;
+            --gold-light: #F9F5E8;
+            --charcoal: #2C3532;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); }
+        body { font-family: 'Inter', sans-serif; background: var(--mint-light); color: var(--charcoal); }
         .font-display { font-family: 'Fraunces', serif; }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
@@ -37,26 +39,26 @@
         .price-tag {
             font-family: 'Fraunces', serif;
             font-weight: 600;
-            color: var(--oxblood-dark);
-            background: #F3E4D4;
-            border: 1px solid #E3CBA5;
+            color: var(--mint-dark);
+            background: var(--mint-light);
+            border: 1px solid #C2E2DC;
         }
     </style>
 </head>
 <body class="min-h-screen pb-10 antialiased">
 
-    <!-- Header: bakery box lid -->
-    <header class="relative pb-6" style="background: linear-gradient(180deg, var(--oxblood) 0%, var(--oxblood-dark) 100%);">
+    <!-- Header: Logodaki Su Yeşili Tonu -->
+    <header class="relative pb-6" style="background: linear-gradient(180deg, var(--mint) 0%, #8BBFB3 100%);">
         <div class="pt-9 pb-10 text-center relative z-10">
-            <!-- Wax-seal style monogram -->
-            <div class="mx-auto mb-3 w-16 h-16 rounded-full flex items-center justify-center border-2"
-                 style="background: var(--gold); border-color: #DDC38A;">
-                <span class="font-display text-2xl font-bold text-oxblood" style="color: var(--oxblood-dark);">K</span>
+            <!-- Logodaki beyaz/altın yuvarlak mühür stilinde Monogram -->
+            <div class="mx-auto mb-3 w-16 h-16 rounded-full flex items-center justify-center border-2 shadow-sm shadow-black/5"
+                 style="background: var(--cream); border-color: var(--gold);">
+                <span class="font-display text-2xl font-bold" style="color: var(--mint-dark);">K</span>
             </div>
-            <h1 class="font-display text-3xl font-semibold tracking-wide text-white">Koncuk</h1>
-            <p class="text-[11px] tracking-[0.35em] uppercase mt-1 font-medium" style="color: #E3C79A;">Pastanesi</p>
+            <h1 class="font-display text-3xl font-semibold tracking-wide text-stone-800" style="color: var(--mint-dark);">Koncuk</h1>
+            <p class="text-[11px] tracking-[0.35em] uppercase mt-1 font-semibold text-white">Pastanesi</p>
         </div>
-        <div class="absolute bottom-0 left-0 right-0 h-4 scallop-edge" style="background: var(--cream);"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-4 scallop-edge" style="background: var(--mint-light);"></div>
     </header>
 
     <!-- Ana Konteyner -->
@@ -68,7 +70,7 @@
         <!-- Ürün Kartları Listesi -->
         <div id="menu-items" class="space-y-4">
             <div class="flex flex-col items-center justify-center py-16">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 mb-3" style="border-color: var(--oxblood);"></div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 mb-3" style="border-color: var(--mint-dark);"></div>
                 <p class="text-sm font-medium" style="color: var(--charcoal); opacity: 0.6;">Lezzetler yükleniyor...</p>
             </div>
         </div>
@@ -76,17 +78,14 @@
         <!-- Footer -->
         <footer class="text-center pt-8 pb-2">
             <a href="https://www.instagram.com/koncukpastanesi" target="_blank" rel="noopener"
-               class="inline-flex items-center gap-1.5 text-xs font-medium tracking-wide"
-               style="color: var(--oxblood-dark); opacity: 0.75;">
-                @koncukpastanesi
+               class="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide transition-opacity hover:opacity-100"
+               style="color: var(--mint-dark); opacity: 0.75;">
+                 @koncukpastanesi
             </a>
         </footer>
     </main>
 
     <script>
-        // ===================================================
-        // SADECE BURAYA KENDİ GOOGLE SHEET ID'Nİ YAPIŞTIR
-        // ===================================================
         const SHEET_ID = '1jNADW0b_Hz8lmTrIuIr7QhupaMttfag-L1fLfqSiDy4';
 
         const url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json";
@@ -98,8 +97,6 @@
                 const res = await fetch(url);
                 const text = await res.text();
 
-                // Sabit substring(47) yerine güvenli regex ile ayıklama —
-                // Google'ın sardığı prefix uzunluğu değişse bile çalışır.
                 const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/);
                 if (!match) throw new Error('Beklenmeyen yanıt formatı');
                 const json = JSON.parse(match[1]);
@@ -123,8 +120,8 @@
             } catch (err) {
                 console.error("Hata:", err);
                 document.getElementById('menu-items').innerHTML =
-                    '<div class="text-center py-10 rounded-2xl border p-4" style="background:#F8E9E9; border-color:#E9C7C7;">' +
-                    '<p class="font-medium text-sm" style="color: var(--oxblood-dark);">Menü şu an yüklenemedi, birazdan tekrar deneyin.</p>' +
+                    '<div class="text-center py-10 rounded-2xl border p-4" style="background:#FFF5F5; border-color:#F2C2C2;">' +
+                    '<p class="font-medium text-sm" style="color: var(--mint-dark);">Menü şu an yüklenemedi, birazdan tekrar deneyin.</p>' +
                     '</div>';
             }
         }
@@ -143,8 +140,8 @@
             container.innerHTML = uniqueCategories.map(function (cat) {
                 const isSelected = cat === activeCategory;
                 const style = isSelected
-                    ? 'background: var(--oxblood); color: #F3E4D4; border-color: var(--oxblood);'
-                    : 'background: var(--paper); color: var(--charcoal); border-color: #E3D5BC;';
+                    ? 'background: var(--mint-dark); color: #FFFFFF; border-color: var(--mint-dark); shadow-sm;'
+                    : 'background: var(--paper); color: var(--charcoal); border-color: #D3E5E1;';
 
                 return '<button onclick="filterCategory(\'' + cat.replace(/'/g, "\\'") + '\')" ' +
                     'class="px-5 py-2.5 rounded-full text-xs tracking-wide font-semibold border transition-all duration-200 whitespace-nowrap snap-center" ' +
@@ -168,9 +165,9 @@
                     ? '<img src="' + item.image + '" class="w-full h-full object-cover" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'' + placeholderSvg() + '\'">'
                     : placeholderSvg();
 
-                return '<div class="rounded-2xl overflow-hidden flex h-28 border transition-transform duration-150 active:scale-[0.99]" ' +
-                    'style="background: var(--paper); border-color: #E9DCC3;">' +
-                    '<div class="w-28 h-full flex-shrink-0" style="background: var(--cream);">' + imageBlock + '</div>' +
+                return '<div class="rounded-2xl overflow-hidden flex h-28 border transition-transform duration-150 active:scale-[0.99] shadow-xs" ' +
+                    'style="background: var(--paper); border-color: #E2ECE9;">' +
+                    '<div class="w-28 h-full flex-shrink-0" style="background: var(--mint-light);">' + imageBlock + '</div>' +
                     '<div class="p-3.5 flex flex-col justify-between flex-1 min-w-0">' +
                     '<div>' +
                     '<h3 class="font-display font-semibold truncate text-[15px] tracking-tight" style="color: var(--charcoal);">' + item.name + '</h3>' +
@@ -185,7 +182,7 @@
         }
 
         function placeholderSvg() {
-            return '<div class="w-full h-full flex items-center justify-center" style="color: var(--gold); opacity: 0.5;">' +
+            return '<div class="w-full h-full flex items-center justify-center" style="color: var(--mint); opacity: 0.7;">' +
                 '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
                 '<path d="M4 19h16M6 19V9a6 6 0 0112 0v10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
         }
