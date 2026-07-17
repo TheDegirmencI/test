@@ -1,0 +1,130 @@
+HTML
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastane QR Menü</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Kategori menüsünün scrollbar'ını gizlemek için şık bir dokunuş */
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 min-h-screen pb-24">
+
+    <!-- Üst Bar / Logo Alanı -->
+    <header class="bg-amber-900 text-amber-50 py-6 text-center shadow-md mb-6">
+        <h1 class="text-2xl font-bold tracking-wide">LEZZET PASTANESİ</h1>
+        <p class="text-xs text-amber-200 mt-1">Taze ve Günlük Lezzetler</p>
+    </header>
+
+    <!-- Ana İçerik Alanı -->
+    <main class="max-w-md mx-auto px-4">
+        
+        <!-- Kategoriler Yatay Kaydırılabilir Menü -->
+        <div id="categories" class="flex gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none">
+            <!-- JavaScript burayı otomatik dolduracak -->
+        </div>
+
+        <!-- Ürün Kartları Listesi -->
+        <div id="menu-items" class="space-y-4">
+            <p class="text-center text-stone-500 py-8">Menü yükleniyor...</p>
+        </div>
+
+    </main>
+
+    <!-- Sabit Garson Çağır Butonu -->
+    <button onclick="alert('Garsonumuz masanıza yönlendirildi!')" class="fixed bottom-6 right-6 bg-amber-600 text-white font-semibold px-5 py-3 rounded-full shadow-2xl hover:bg-amber-700 transition active:scale-95 z-50 flex items-center gap-2 animate-bounce">
+        🛎️ Garson Çağır
+    </button>
+
+    <!-- Backend Entegrasyonu ve Mantık -->
+    <script>
+        // ==========================================
+        // Sadece aşağıdaki tırnak içine kendi ID'ni yapıştır knk!
+        // ==========================================
+        const SHEET_ID = '1jNADW0b_Hz8lmTrIuIr7QhupaMttfag-L1fLfqSiDy4'; 
+        
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        let menuData = [];
+
+        async function fetchMenu() {
+            try {
+                console.log("Veri çekiliyor, adres:", url);
+                const res = await fetch(url);
+                const text = await res.text();
+                
+                // Google'ın döndürdüğü 'google.visualization.Query.setResponse(...);' sarmalını temizleme
+                const temp = text.substring(47).slice(0, -2);
+                const json = JSON.parse(temp);
+                const rows = json.table.rows;
+                
+                console.log("E-Tablodan gelen ham satırlar:", rows);
+
+                // Gelen veriyi eşleme ve düzenleme
+                menuData = rows.map(row => ({
+                    category: row.c[0]?.v || 'Diğer',
+                    name: row.c[1]?.v || '',
+                    description: row.c[2]?.v || '',
+                    price: row.c[3]?.v || 0,
+                    image: row.c[4]?.v || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500',
+                    active: row.c[5]?.v || 'Y'
+                })).filter(item => item.active === 'Y' && item.name !== '');
+
+                console.log("Menü verisi işlendi:", menuData);
+
+                renderCategories();
+                renderItems();
+            } catch (err) {
+                console.error("Knk kodda hata var, detay:", err);
+                document.getElementById('menu-items').innerHTML = '<p class="text-red-500 text-center py-8">Menü şu an yüklenemedi. Konsolu (F12) kontrol et.</p>';
+            }
+        }
+
+        // Üstteki kategori butonlarını basar
+        function renderCategories() {
+            const cats = ['Hepsi', ...new Set(menuData.map(i => i.category))];
+            const container = document.getElementById('categories');
+            container.innerHTML = cats.map(c => `
+                <button onclick="filterCategory('${c}')" class="bg-white border border-stone-200 text-stone-700 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm whitespace-nowrap active:bg-amber-950 active:text-white">${c}</button>
+            `).join('');
+        }
+
+        // Seçilen kategoriye göre ürün kartlarını listeler
+        function renderItems(filter = 'Hepsi') {
+            const container = document.getElementById('menu-items');
+            const filtered = filter === 'Hepsi' ? menuData : menuData.filter(i => i.category === filter);
+            
+            if(filtered.length === 0) {
+                container.innerHTML = '<p class="text-stone-400 text-center py-4">Bu kategoride ürün bulunamadı.</p>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <div class="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden flex h-28">
+                    <img src="${item.image}" class="w-28 h-full object-cover" alt="${item.name}">
+                    <div class="p-3 flex flex-col justify-between flex-1 min-w-0">
+                        <div>
+                            <h3 class="font-bold text-stone-900 truncate text-base">${item.name}</h3>
+                            <p class="text-xs text-stone-500 line-clamp-2 mt-0.5">${item.description}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-amber-800 font-bold text-base">${item.price} TL</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(c) {
+            renderItems(c);
+        }
+
+        // Sayfa açıldığında çalıştır
+        fetchMenu();
+    </script>
+</body>
+</html>
