@@ -1,52 +1,94 @@
-HTML
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koncuk Pastanesi - QR Menü</title>
-    <!-- Tailwind CSS v4 CDN -->
+    <title>Koncuk Pastanesi - Menü</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cream: #F1E7D6;
+            --paper: #FBF7EF;
+            --oxblood: #7A2432;
+            --oxblood-dark: #5C1A26;
+            --gold: #B8934D;
+            --charcoal: #2B2420;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); }
+        .font-display { font-family: 'Fraunces', serif; }
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Scalloped "box lid" edge under the header */
+        .scallop-edge {
+            -webkit-mask-image: radial-gradient(circle at 10px 0, transparent 10px, black 10.5px);
+            -webkit-mask-size: 20px 20px;
+            -webkit-mask-repeat: repeat-x;
+            -webkit-mask-position: bottom;
+            mask-image: radial-gradient(circle at 10px 0, transparent 10px, black 10.5px);
+            mask-size: 20px 20px;
+            mask-repeat: repeat-x;
+            mask-position: bottom;
+        }
+
+        .price-tag {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            color: var(--oxblood-dark);
+            background: #F3E4D4;
+            border: 1px solid #E3CBA5;
+        }
     </style>
 </head>
-<body class="bg-stone-50 text-stone-800 min-h-screen pb-8 antialiased">
+<body class="min-h-screen pb-10 antialiased">
 
-    <!-- Koncuk Pastanesi Header -->
-    <header class="bg-stone-900 text-stone-100 py-8 text-center shadow-md mb-6 border-b-4 border-amber-500 relative overflow-hidden">
-        <div class="relative z-10">
-            <h1 class="text-2xl font-black tracking-widest text-amber-400 uppercase">KONCUK</h1>
-            <p class="text-amber-100/80 text-xs tracking-wider uppercase mt-1 font-medium">P a s t a n e s i</p>
-            <div class="w-12 h-0.5 bg-amber-500 mx-auto mt-3"></div>
+    <!-- Header: bakery box lid -->
+    <header class="relative pb-6" style="background: linear-gradient(180deg, var(--oxblood) 0%, var(--oxblood-dark) 100%);">
+        <div class="pt-9 pb-10 text-center relative z-10">
+            <!-- Wax-seal style monogram -->
+            <div class="mx-auto mb-3 w-16 h-16 rounded-full flex items-center justify-center border-2"
+                 style="background: var(--gold); border-color: #DDC38A;">
+                <span class="font-display text-2xl font-bold text-oxblood" style="color: var(--oxblood-dark);">K</span>
+            </div>
+            <h1 class="font-display text-3xl font-semibold tracking-wide text-white">Koncuk</h1>
+            <p class="text-[11px] tracking-[0.35em] uppercase mt-1 font-medium" style="color: #E3C79A;">Pastanesi</p>
         </div>
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-4 scallop-edge" style="background: var(--cream);"></div>
     </header>
 
     <!-- Ana Konteyner -->
-    <main class="max-w-md mx-auto px-4">
-        
+    <main class="max-w-md mx-auto px-4 mt-2">
+
         <!-- Kategoriler -->
-        <div id="categories" class="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-none snap-x"></div>
+        <div id="categories" class="flex gap-2 overflow-x-auto pb-4 mb-2 scrollbar-none snap-x"></div>
 
         <!-- Ürün Kartları Listesi -->
         <div id="menu-items" class="space-y-4">
-            <div class="flex flex-col items-center justify-center py-12">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 mb-3"></div>
-                <p class="text-sm text-stone-500 font-medium">Lezzetler yükleniyor...</p>
+            <div class="flex flex-col items-center justify-center py-16">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 mb-3" style="border-color: var(--oxblood);"></div>
+                <p class="text-sm font-medium" style="color: var(--charcoal); opacity: 0.6;">Lezzetler yükleniyor...</p>
             </div>
         </div>
 
+        <!-- Footer -->
+        <footer class="text-center pt-8 pb-2">
+            <a href="https://www.instagram.com/koncukpastanesi" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-1.5 text-xs font-medium tracking-wide"
+               style="color: var(--oxblood-dark); opacity: 0.75;">
+                @koncukpastanesi
+            </a>
+        </footer>
     </main>
 
     <script>
         // ===================================================
         // SADECE BURAYA KENDİ GOOGLE SHEET ID'Nİ YAPIŞTIR
         // ===================================================
-        const SHEET_ID = '1jNADW0b_Hz8lmTrIuIr7QhupaMttfag-L1fLfqSiDy4'; 
-        
+        const SHEET_ID = '1jNADW0b_Hz8lmTrIuIr7QhupaMttfag-L1fLfqSiDy4';
+
         const url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json";
         let menuData = [];
         let activeCategory = 'Hepsi';
@@ -55,21 +97,24 @@ HTML
             try {
                 const res = await fetch(url);
                 const text = await res.text();
-                
-                const temp = text.substring(47).slice(0, -2);
-                const json = JSON.parse(temp);
-                const rows = json.table.rows;
-                
-                menuData = rows.map(function(row) {
+
+                // Sabit substring(47) yerine güvenli regex ile ayıklama —
+                // Google'ın sardığı prefix uzunluğu değişse bile çalışır.
+                const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/);
+                if (!match) throw new Error('Beklenmeyen yanıt formatı');
+                const json = JSON.parse(match[1]);
+                const rows = json.table.rows || [];
+
+                menuData = rows.map(function (row) {
                     return {
-                        category: row.c[0] && row.c[0].v ? row.c[0].v.trim() : 'Diğer',
-                        name: row.c[1] && row.c[1].v ? row.c[1].v.trim() : '',
-                        description: row.c[2] && row.c[2].v ? row.c[2].v.trim() : '',
-                        price: row.c[3] && row.c[3].v ? row.c[3].v : 0,
-                        image: row.c[4] && row.c[4].v ? row.c[4].v.trim() : 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500',
-                        active: row.c[5] && row.c[5].v ? row.c[5].v.trim().toUpperCase() : 'Y'
+                        category: row.c[0] && row.c[0].v ? String(row.c[0].v).trim() : 'Diğer',
+                        name: row.c[1] && row.c[1].v ? String(row.c[1].v).trim() : '',
+                        description: row.c[2] && row.c[2].v ? String(row.c[2].v).trim() : '',
+                        price: row.c[3] && row.c[3].v != null ? row.c[3].v : 0,
+                        image: row.c[4] && row.c[4].v ? String(row.c[4].v).trim() : '',
+                        active: row.c[5] && row.c[5].v ? String(row.c[5].v).trim().toUpperCase() : 'Y'
                     };
-                }).filter(function(item) {
+                }).filter(function (item) {
                     return item.active === 'Y' && item.name !== '';
                 });
 
@@ -77,55 +122,74 @@ HTML
                 renderItems();
             } catch (err) {
                 console.error("Hata:", err);
-                document.getElementById('menu-items').innerHTML = '<div class="text-center py-8 bg-red-50 rounded-xl border border-red-100 p-4"><p class="text-red-600 font-medium text-sm">Menü şu an yüklenemedi.</p></div>';
+                document.getElementById('menu-items').innerHTML =
+                    '<div class="text-center py-10 rounded-2xl border p-4" style="background:#F8E9E9; border-color:#E9C7C7;">' +
+                    '<p class="font-medium text-sm" style="color: var(--oxblood-dark);">Menü şu an yüklenemedi, birazdan tekrar deneyin.</p>' +
+                    '</div>';
             }
         }
 
+        function formatPrice(price) {
+            const num = Number(price);
+            if (Number.isNaN(num)) return price + ' TL';
+            return num.toLocaleString('tr-TR', { maximumFractionDigits: 2 }) + ' TL';
+        }
+
         function renderCategories() {
-            const rawCategories = menuData.map(function(item) { return item.category; });
+            const rawCategories = menuData.map(function (item) { return item.category; });
             const uniqueCategories = ['Hepsi', ...new Set(rawCategories)];
             const container = document.getElementById('categories');
-            
-            container.innerHTML = uniqueCategories.map(function(cat) {
+
+            container.innerHTML = uniqueCategories.map(function (cat) {
                 const isSelected = cat === activeCategory;
-                const btnClass = isSelected 
-                    ? 'bg-amber-950 text-amber-400 border-amber-950 font-semibold shadow-md' 
-                    : 'bg-white text-stone-600 border-stone-200/80 hover:bg-stone-50';
-                
-                return '<button onclick="filterCategory(\'' + cat + '\')" class="px-5 py-2.5 rounded-full text-xs tracking-wide font-medium border transition-all duration-200 whitespace-nowrap snap-center ' + btnClass + '">' + cat + '</button>';
+                const style = isSelected
+                    ? 'background: var(--oxblood); color: #F3E4D4; border-color: var(--oxblood);'
+                    : 'background: var(--paper); color: var(--charcoal); border-color: #E3D5BC;';
+
+                return '<button onclick="filterCategory(\'' + cat.replace(/'/g, "\\'") + '\')" ' +
+                    'class="px-5 py-2.5 rounded-full text-xs tracking-wide font-semibold border transition-all duration-200 whitespace-nowrap snap-center" ' +
+                    'style="' + style + '">' + cat + '</button>';
             }).join('');
         }
 
         function renderItems() {
             const container = document.getElementById('menu-items');
-            const filtered = activeCategory === 'Hepsi' 
-                ? menuData 
-                : menuData.filter(function(item) { return item.category === activeCategory; });
-            
-            if(filtered.length === 0) {
-                container.innerHTML = '<p class="text-stone-400 text-center py-12 text-sm font-medium">Bu kategoride henüz ürün bulunmuyor.</p>';
+            const filtered = activeCategory === 'Hepsi'
+                ? menuData
+                : menuData.filter(function (item) { return item.category === activeCategory; });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-center py-12 text-sm font-medium" style="color: var(--charcoal); opacity: 0.5;">Bu kategoride henüz ürün bulunmuyor.</p>';
                 return;
             }
 
-            container.innerHTML = filtered.map(function(item) {
-                return '<div class="bg-white rounded-2xl shadow-xs border border-stone-100 overflow-hidden flex h-28 transition-transform duration-200 active:scale-[0.99]">' +
-                    '<div class="w-28 h-full flex-shrink-0 relative bg-stone-100">' +
-                        '<img src="' + item.image + '" class="w-full h-full object-cover" alt="' + item.name + '" onerror="this.src=\'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500\'">' +
-                    '</div>' +
+            container.innerHTML = filtered.map(function (item) {
+                const imageBlock = item.image
+                    ? '<img src="' + item.image + '" class="w-full h-full object-cover" alt="' + item.name + '" onerror="this.parentElement.innerHTML=\'' + placeholderSvg() + '\'">'
+                    : placeholderSvg();
+
+                return '<div class="rounded-2xl overflow-hidden flex h-28 border transition-transform duration-150 active:scale-[0.99]" ' +
+                    'style="background: var(--paper); border-color: #E9DCC3;">' +
+                    '<div class="w-28 h-full flex-shrink-0" style="background: var(--cream);">' + imageBlock + '</div>' +
                     '<div class="p-3.5 flex flex-col justify-between flex-1 min-w-0">' +
-                        '<div>' +
-                            '<h3 class="font-bold text-stone-900 truncate text-sm tracking-tight">' + item.name + '</h3>' +
-                            '<p class="text-[11px] text-stone-500 line-clamp-2 mt-0.5 leading-relaxed font-normal">' + item.description + '</p>' +
-                        '</div>' +
-                        '<div class="flex justify-between items-end">' +
-                            '<span class="text-amber-900 font-extrabold text-sm tracking-tight bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-100/50">' + item.price + ' TL</span>' +
-                        '</div>' +
+                    '<div>' +
+                    '<h3 class="font-display font-semibold truncate text-[15px] tracking-tight" style="color: var(--charcoal);">' + item.name + '</h3>' +
+                    '<p class="text-[11px] mt-0.5 leading-relaxed font-normal line-clamp-2" style="color: var(--charcoal); opacity: 0.6;">' + item.description + '</p>' +
                     '</div>' +
-                '</div>';
+                    '<div class="flex justify-start">' +
+                    '<span class="price-tag text-[13px] px-2.5 py-1 rounded-lg">' + formatPrice(item.price) + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
             }).join('');
         }
 
-        
+        function placeholderSvg() {
+            return '<div class="w-full h-full flex items-center justify-center" style="color: var(--gold); opacity: 0.5;">' +
+                '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+                '<path d="M4 19h16M6 19V9a6 6 0 0112 0v10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+        }
+
         function filterCategory(cat) {
             activeCategory = cat;
             renderCategories();
